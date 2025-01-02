@@ -1,0 +1,29 @@
+POST http://localhost:8080/api/people/
+Content-Type: application/json
+
+{
+  "name": "Luca Zaccheo",
+  "birthDate": "1994-10-17",
+  "gender": "M",
+  "married": false
+}
+
+###
+GET http://localhost:8080/api/people/
+
+###
+GET http://localhost:8080/api/people/1
+
+###
+PUT http://localhost:8080/api/people/2
+Content-Type: application/json
+
+{
+  "name": "Luca Zacheo",
+  "birthDate": "1994-10-17",
+  "gender": "M",
+  "married": false
+}
+
+###
+DELETE http://localhost:8080/api/people/1
