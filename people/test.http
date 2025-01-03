@@ -15,7 +15,7 @@ GET http://localhost:8080/api/people/
 GET http://localhost:8080/api/people/1
 
 ###
-PUT http://localhost:8080/api/people/2
+PUT http://localhost:8080/api/people/1
 Content-Type: application/json
 
 {

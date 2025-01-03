@@ -2,6 +2,8 @@ package it.lucadev.people.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,14 @@ import it.lucadev.people.service.PersonService;
 @RequestMapping("/api/people")
 public class PersonController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
+
     @Autowired
     PersonService service;
 
     @GetMapping("/")
     public ResponseEntity<List<PersonDto>> getPeople() {
-        
+        logger.info("getPeople called");
         List<PersonDto> dtoList = service.getPeople();
         return ResponseEntity.ok(dtoList);
 
@@ -34,40 +38,41 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PersonDto> getPerson(@PathVariable Long id) {
-
+        logger.info("getPerson called");
         PersonDto dto = service.getPerson(id);
         return ResponseEntity.ok(dto);
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePerson(@PathVariable Long id){
-
+    public ResponseEntity<String> deletePerson(@PathVariable Long id) {
+        logger.info("deletePerson called");
         boolean res = service.deletePerson(id);
 
-        if (res) {            
+        if (res) {
             return ResponseEntity.ok("Person deleted succesfully");
-            // return new ResponseEntity<String>("Person deleted succesfully", HttpStatus.OK); alternativa
-        } else {            
-            return new ResponseEntity<String>("Person not found", HttpStatus.NOT_FOUND);         
-            // return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found");  alternativa
+            // return new ResponseEntity<>("Person deleted succesfully" HttpStatus.OK);
+            // alternativa
+        } else {
+            return new ResponseEntity<String>("Person not found", HttpStatus.NOT_FOUND);
+            // return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found");
+            // alternativa
         }
-        
+
     }
-    
-    // addPerson non dovrebbe generare eccezioni poichè chiamate con dati errati non raggiungono il controller  
+
     @PostMapping("/")
     public ResponseEntity<?> addPerson(@RequestBody PersonDto dto) {
+        logger.info("addPerson called");
+        PersonDto added = service.addPerson(dto);
 
-        PersonDto added = service.addPerson(dto);      
-        
         return ResponseEntity.ok(added);
-    }    
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePerson(@PathVariable Long id, @RequestBody PersonDto inDto) {
-        
-       PersonDto outDto = service.updatePerson(inDto, id);
+        logger.info("updatePerson called");
+        PersonDto outDto = service.updatePerson(inDto, id);
 
         if (outDto == null) {
             return new ResponseEntity<String>("Person not found", HttpStatus.NOT_FOUND);
@@ -75,5 +80,5 @@ public class PersonController {
             return ResponseEntity.ok(outDto);
         }
     }
-    
+
 }
